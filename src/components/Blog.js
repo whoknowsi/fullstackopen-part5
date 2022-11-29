@@ -1,21 +1,12 @@
 import { useState } from 'react'
-import blogsService from '../services/blogs'
 
-const Blog = ({ username, blog, removeBlogEntry }) => {
+const Blog = ({ username, blog, removeBlogEntry, updateBlogLikes }) => {
 	const [view, setView] = useState(false)
-	const [currentLikes, setCurrentLikes] = useState(blog.likes)
 
 	const handleLike = async (e) => {
-		const data = { ...blog }
-		data.likes = currentLikes + 1
-		data.user = data.user.id
-
 		e.target.disabled = true
-
-		const updatedBlog = await blogsService.likeBlog(blog.id, data)
-
+		await updateBlogLikes(blog)
 		e.target.disabled = false
-		setCurrentLikes(updatedBlog.likes)
 	}
 
 	const handleDelete = (e) => {
@@ -34,10 +25,9 @@ const Blog = ({ username, blog, removeBlogEntry }) => {
 			<>
 				<div>{blog.url}</div>
 				<div>
-					likes {currentLikes} <button onClick={handleLike}>like</button>
+					likes {blog.likes} <button onClick={handleLike}>like</button>
 				</div>
-				<div>{blog.author}</div>
-
+				<div>{blog.user.username}</div>
 				{username === blog.user.username && <button onClick={handleDelete}>remove</button>}
 			</>
 		)
@@ -45,7 +35,7 @@ const Blog = ({ username, blog, removeBlogEntry }) => {
 
 	return (
 		<div className="blogEntry">
-			{blog.title} <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
+			{blog.title} {blog.author} <button onClick={toggleView}>{view ? 'hide' : 'view'}</button>
 			{view && details()}
 		</div>
 	)

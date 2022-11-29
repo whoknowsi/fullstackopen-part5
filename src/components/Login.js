@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Notification from './Notification'
 import PropTypes from 'prop-types'
 
-const Login = ({ setUser, setNotification, message, notificationType: notificationStatus }) => {
+const Login = ({ setUser, setNotification, message, notificationStatus }) => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -20,6 +20,7 @@ const Login = ({ setUser, setNotification, message, notificationType: notificati
 			setUsername('')
 			setPassword('')
 		} catch (error) {
+			console.log(error)
 			setNotification(error.response.data.error, 'error')
 		}
 	}
@@ -32,6 +33,7 @@ const Login = ({ setUser, setNotification, message, notificationType: notificati
 				<div>
 					username
 					<input
+						id='username'
 						type="text"
 						value={username}
 						name="Username"
@@ -41,13 +43,14 @@ const Login = ({ setUser, setNotification, message, notificationType: notificati
 				<div>
 					password
 					<input
+						id='password'
 						type="password"
 						value={password}
 						name="Password"
 						onChange={({ target }) => setPassword(target.value)}
 					></input>
 				</div>
-				<button type="submit">login</button>
+				<button id='submit-button' type="submit">login</button>
 			</form>
 		</div>
 	)

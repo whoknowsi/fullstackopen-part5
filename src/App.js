@@ -73,6 +73,16 @@ const App = () => {
 		setCurrentTimeOut(notificationTimeOut)
 	}
 
+	const updateBlogLikes = async (blog) => {
+		const updatedLikeBlog = {
+			...blog,
+			likes: blog.likes + 1,
+		}
+		await blogsService.likeBlog(updatedLikeBlog.id, updatedLikeBlog)
+		const updatedBlogs = await blogsService.getAll()
+		setBlogs(updatedBlogs.sort(sortByLikes))
+	}
+
 	const blogEntries = () => {
 		return (
 			<div>
@@ -90,6 +100,7 @@ const App = () => {
 						username={user.username}
 						blog={blog}
 						removeBlogEntry={removeBlogEntry}
+						updateBlogLikes={updateBlogLikes}
 					/>
 				))}
 			</div>
